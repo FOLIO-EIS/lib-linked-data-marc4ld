@@ -69,6 +69,22 @@ class Bibframe2Marc010IT {
       .isEqualTo(expectedMarc);
   }
 
+  @Test
+  void should_ignore_lccn_with_invalid_status() {
+    // given
+    var expectedMarc = loadResourceAsString("fields/marc_empty.jsonl");
+    var resource = createInstanceWithLccn(
+      lccn("11111111", "invalid_status")
+    );
+
+    // when
+    var result = bibframe2MarcMapper.toMarcJson(resource);
+
+    // then
+    assertThat(result)
+      .isEqualTo(expectedMarc);
+  }
+
   private Resource createInstanceWithLccn(Resource... lccns) {
     return createResource(
       emptyMap(),
